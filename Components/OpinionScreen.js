@@ -8,5 +8,4 @@ function OpinionScreen() {
     );
 }
 
-
 export default OpinionScreen;
