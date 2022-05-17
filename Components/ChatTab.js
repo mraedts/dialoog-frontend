@@ -12,32 +12,32 @@ function User(img, name, userId) {
 }
 
 
+
+
 const Chats = [
   {
-    user: User('./assets/person1.jpg', 'Jolanda', 1),
+    user: User('../../../../assets/person1.jpg', 'Jolanda', 1),
     messages: [
       Message(new Date(), "Lorem ipsum", false),
       Message(new Date(), "IUHSIUDHDSKJHDKJHSJKDHKJH", false),
+      Message(new Date(), "Ok Jolanda", true),
     ],
     topic: "Genocide"
   },
   {
-    user: User('./assets/person1.jpg', 'Hennie', 2),
+    user: User('../assets/person1.jpg', 'Hennie', 2),
     messages: [
       Message(new Date(), "JKBSDJKHDJKSHD", false),
       Message(new Date(), "Lorem ipsum", false),
+      Message(new Date(), "Ok Hennie", true),
     ],
     topic: "Rutte"
   },
   
 ]
-  
 
 
   
-
-
-
 const _storeData = async () => {
   try {
     await AsyncStorage.setItem('@Chats', JSON.stringify(Chats));
@@ -55,7 +55,7 @@ const _readData = async () => {
   }
 };
 
-function ListItem({ name, lastMessage, nav }) {
+function ListItem({ name, messages, nav }) {
   useEffect(() => {
     console.log('from listitem: ');
     console.log(nav);
@@ -63,6 +63,8 @@ function ListItem({ name, lastMessage, nav }) {
 
   return (
     <View
+    onTouchEnd={() => nav.navigate('UserChat', {messages:messages, name: name, })}
+    options={{ title: 'My home' }}
       style={{
         flexDirection: 'row',
         height: 90,
@@ -71,9 +73,8 @@ function ListItem({ name, lastMessage, nav }) {
       }}
     >
       <View
-        onTouchEnd={() => nav.navigate('UserChat')}
+        
         style={{
-          
           flex: 0.25,
           borderBottomColor: 'grey',
           borderBottomWidth: 1,
@@ -116,7 +117,7 @@ function ListItem({ name, lastMessage, nav }) {
           style={{ paddingLeft: 5, fontSize: 14, paddingRight: 40 }}
           numberOfLines={2}
         >
-          {lastMessage}
+          {messages[messages.length-1].text}
         </Text>
       </View>
     </View>
@@ -132,7 +133,7 @@ const ChatList = ({ chats, nav }) => {
   const renderItem = ({ item }) => (
     <ListItem
       name={item.user.name}
-      lastMessage={item.messages[0].text}
+      messages={item.messages}
       nav={nav}
     />
   );
@@ -152,7 +153,6 @@ function ChatTab({ navigation }) {
   const [chats, setChats] = useState();
   useEffect(() => {_storeData()})
   
-
   const readChats = async () => {
     try {
       const str = await AsyncStorage.getItem('@Chats');
@@ -166,7 +166,6 @@ function ChatTab({ navigation }) {
   // Empty dependency array to prevent from firing infinitely
   useEffect(async () => {
     readChats();
-    console.log(navigation);
   }, []);
 
   return <ChatList chats={chats} nav={navigation} />;
@@ -175,8 +174,6 @@ function ChatTab({ navigation }) {
 const styles = StyleSheet.create({
   list: {
     backgroundColor: 'white'
-    
-    
   },
   listItem: {
     backgroundColor: 'beige',

@@ -1,14 +1,16 @@
 
-import { Text, View } from 'react-native';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SettingsScreen from './Components/SettingsScreen';
+import SettingsScreen from './Components/HomeScreen/SettingsScreen';
 import ChatTab from './Components/ChatTab';
-import OpinionScreen from './Components/OpinionScreen';
-import UserChat from './Components/UserChat'
-import React, { useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import OpinionScreen from './Components/HomeScreen/OpinionScreen';
+import UserChat from './Components/HomeScreen/UserChat'
+import Welcome from './Components/Welcome'
+import Login from './Components/Login';
+import Register from './Components/Register'
+import {useState} from 'react';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -20,20 +22,22 @@ function HomeScreen({chats}) {
         <Tab.Screen name="Meningen" component={OpinionScreen} />
         <Tab.Screen name="Instellingen" component={SettingsScreen} />
       </Tab.Navigator>
-    
   );
 }
 
 export default function App() {
- 
+  const [loggedIn, setLoggedIn] = useState(true);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}} />
+        {loggedIn ? <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}} /> : null}
+    
+        <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}} />
+        <Stack.Screen name="Log in" component={Login} />
+        <Stack.Screen name="Registreren" component={Register} />
         <Stack.Screen name="UserChat" component={UserChat} />
       </Stack.Navigator>
-
     </NavigationContainer>
   )
 }
