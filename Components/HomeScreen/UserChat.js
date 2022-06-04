@@ -1,21 +1,29 @@
 import * as React from 'react';
-import { Text, View, FlatList, StyleSheet, TextInput, SafeAreaView } from 'react-native';
+import { Text, View, FlatList, StyleSheet, TextInput, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useEffect } from 'react';
+import {KeyboardAvoidingView, Button} from 'react-native'
 
 export default function UserChat({route, navigation}) {
-  const { messages, name } = route.params;
+  const { messages, name} = route.params;
 
   useEffect(() => {
+    console.log('from UserChat:  ')
+    
     navigation.setOptions({
       title: name
     })
   },[])
 
   return (
-    <SafeAreaView >
+    
+   
+     
       <MessageList messages={messages}/>
-    </SafeAreaView>
+    
+  
+    
   );
+  
 }
 
 function Message({text, fromSelf}) {
@@ -34,6 +42,10 @@ function Message({text, fromSelf}) {
 }
 
 function MessageList({messages}) {
+  useEffect(()=> {
+    
+  }, [])
+
   const renderItem = ({ item }) => {
   
     return (
@@ -42,19 +54,29 @@ function MessageList({messages}) {
   };
 
   return (
-    <View style={{display: 'flex', flexDirection: 'column', backgroundColor: 'purple', height: '100%', }}>
-      <FlatList
-        style={{height: '80%', backgroundColor: 'cyan'}}
+    
+   
+      <View style={{ height: '100%'}}>
+         <FlatList
+        style={{backgroundColor: 'cyan'}}
         data={messages}
         renderItem={renderItem}
         keyExtractor={(item) => item.text}
       />
-      <View  style={styles.input}><TextInput></TextInput></View>
-    </View>
 
-    
+
+      
+      <View  style={styles.input}>
+        <TextInput style={{flex: 1}}></TextInput>
+        <Button title="V" style={{}} ></Button>
+      </View>
+
+
+      </View>
+   
+      
+     
   );
-
 }
 
 const styles = StyleSheet.create({
@@ -63,7 +85,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     backgroundColor: 'pink',
-  },
+    flexDirection: 'row',
+    
+  }
+ 
+
+  
 });
 
 

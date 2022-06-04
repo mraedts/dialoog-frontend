@@ -37,6 +37,8 @@ const Chats = [
 ]
 
 
+
+
   
 const _storeData = async () => {
   try {
@@ -55,7 +57,7 @@ const _readData = async () => {
   }
 };
 
-function ListItem({ name, messages, nav }) {
+function ListItem({ name, messages, nav}) {
   useEffect(() => {
     console.log('from listitem: ');
     console.log(nav);
@@ -63,7 +65,7 @@ function ListItem({ name, messages, nav }) {
 
   return (
     <View
-    onTouchEnd={() => nav.navigate('UserChat', {messages:messages, name: name, })}
+    onTouchEnd={() => nav.navigate('UserChat', {messages:messages, name: name, stinky: 'stinky' })}
     options={{ title: 'My home' }}
       style={{
         flexDirection: 'row',
@@ -124,10 +126,11 @@ function ListItem({ name, messages, nav }) {
   );
 }
 
-const ChatList = ({ chats, nav }) => {
+const ChatList = ({ chats, nav}) => {
   useEffect(() => {
     console.log('from chatlist:');
     console.log(nav);
+    
   });
 
   const renderItem = ({ item }) => (
@@ -135,6 +138,7 @@ const ChatList = ({ chats, nav }) => {
       name={item.user.name}
       messages={item.messages}
       nav={nav}
+      
     />
   );
 
@@ -152,6 +156,15 @@ const ChatList = ({ chats, nav }) => {
 function ChatTab({ navigation }) {
   const [chats, setChats] = useState();
   useEffect(() => {_storeData()})
+
+  function addMessageToChat(userId, text, fromSelf) {
+    for (let i = 0; i < chats.length;i++) {
+      if (chats[i].userId === userId) {
+        const copy = [...chats[i].messages, Message(new Date(),text,fromSelf)];
+        setChats(copy);
+      }
+    }
+  }
   
   const readChats = async () => {
     try {
