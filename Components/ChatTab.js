@@ -39,7 +39,6 @@ const Chats = [
 
 
 
-  
 const _storeData = async () => {
   try {
     await AsyncStorage.setItem('@Chats', JSON.stringify(Chats));
@@ -65,7 +64,7 @@ function ListItem({ name, messages, nav}) {
 
   return (
     <View
-    onTouchEnd={() => nav.navigate('UserChat', {messages:messages, name: name, stinky: 'stinky' })}
+    onTouchEnd={() => nav.navigate('UserChat', {messages:messages, name: name})}
     options={{ title: 'My home' }}
       style={{
         flexDirection: 'row',
@@ -126,7 +125,7 @@ function ListItem({ name, messages, nav}) {
   );
 }
 
-const ChatList = ({ chats, nav}) => {
+const ChatList = ({ chats, nav, t}) => {
   useEffect(() => {
     console.log('from chatlist:');
     console.log(nav);
@@ -138,6 +137,7 @@ const ChatList = ({ chats, nav}) => {
       name={item.user.name}
       messages={item.messages}
       nav={nav}
+      
       
     />
   );
@@ -155,16 +155,10 @@ const ChatList = ({ chats, nav}) => {
 
 function ChatTab({ navigation }) {
   const [chats, setChats] = useState();
+  const [count, setCount] = useState(1);
   useEffect(() => {_storeData()})
 
-  function addMessageToChat(userId, text, fromSelf) {
-    for (let i = 0; i < chats.length;i++) {
-      if (chats[i].userId === userId) {
-        const copy = [...chats[i].messages, Message(new Date(),text,fromSelf)];
-        setChats(copy);
-      }
-    }
-  }
+  
   
   const readChats = async () => {
     try {
@@ -181,7 +175,7 @@ function ChatTab({ navigation }) {
     readChats();
   }, []);
 
-  return <ChatList chats={chats} nav={navigation} />;
+  return <ChatList chats={chats} nav={navigation}  />;
 }
 
 const styles = StyleSheet.create({

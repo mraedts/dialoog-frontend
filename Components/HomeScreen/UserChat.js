@@ -9,6 +9,7 @@ export default function UserChat({route, navigation}) {
   useEffect(() => {
     console.log('from UserChat:  ')
     
+    
     navigation.setOptions({
       title: name
     })
@@ -18,7 +19,7 @@ export default function UserChat({route, navigation}) {
     
    
      
-      <MessageList messages={messages}/>
+      <MessageList messages={messages} />
     
   
     
@@ -41,7 +42,8 @@ function Message({text, fromSelf}) {
   )
 }
 
-function MessageList({messages}) {
+function MessageList({messages, route}) {
+  
   useEffect(()=> {
     
   }, [])
@@ -52,6 +54,11 @@ function MessageList({messages}) {
       <Message text={item.text} fromSelf={item.fromSelf}/> 
     );
   };
+
+  function test() {
+    console.log('testing...')
+    
+  }
 
   return (
     
@@ -68,7 +75,7 @@ function MessageList({messages}) {
       
       <View  style={styles.input}>
         <TextInput style={{flex: 1}}></TextInput>
-        <Button title="V" style={{}} ></Button>
+        <Button title="V" style={{}} onPress={test}></Button>
       </View>
 
 
@@ -86,11 +93,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'pink',
     flexDirection: 'row',
-    
   }
- 
-
-  
 });
 
 
