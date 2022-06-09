@@ -12,6 +12,7 @@ import Login from './Components/Login';
 import Register from './Components/Register'
 import {useState} from 'react';
 
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ function HomeScreen({chats}) {
         <Tab.Screen name="Gesprekken" component={ChatTab} chats={chats} />
         <Tab.Screen name="Meningen" component={OpinionScreen} />
         <Tab.Screen name="Instellingen" component={SettingsScreen} />
+        
       </Tab.Navigator>
   );
 }
