@@ -54,13 +54,6 @@ function Item({ id, title}) {
       </View>
       );
 }
-  
-
-
-
-
-
-
 
 const OpinionScreen = () => {
   const renderItem = ({ item }) => (

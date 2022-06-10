@@ -1,6 +1,9 @@
 import { Text, View, FlatList, StyleSheet, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 
 
 function Message(time, text, fromSelf) {
@@ -14,7 +17,10 @@ function User(img, name, userId) {
 
 
 
+
+
 const Chats = [
+
   {
     user: User('../../../../assets/person1.jpg', 'Jolanda', 1),
     messages: [
@@ -24,6 +30,7 @@ const Chats = [
     ],
     topic: "Genocide"
   },
+
   {
     user: User('../assets/person1.jpg', 'Hennie', 2),
     messages: [
@@ -35,9 +42,6 @@ const Chats = [
   },
   
 ]
-
-
-
 
 const _storeData = async () => {
   try {
@@ -56,15 +60,14 @@ const _readData = async () => {
   }
 };
 
-function ListItem({ name, messages, nav}) {
+function ListItem({ name, messages, nav, topic, userId}) {
   useEffect(() => {
-    console.log('from listitem: ');
-    console.log(nav);
+  
   });
 
   return (
     <View
-    onTouchEnd={() => nav.navigate('UserChat', {messages:messages, name: name})}
+    onTouchEnd={() => nav.navigate('UserChat', {messages, name, topic, userId})}
     options={{ title: 'My home' }}
       style={{
         flexDirection: 'row',
@@ -74,7 +77,6 @@ function ListItem({ name, messages, nav}) {
       }}
     >
       <View
-        
         style={{
           flex: 0.25,
           borderBottomColor: 'grey',
@@ -125,20 +127,16 @@ function ListItem({ name, messages, nav}) {
   );
 }
 
-const ChatList = ({ chats, nav, t}) => {
-  useEffect(() => {
-    console.log('from chatlist:');
-    console.log(nav);
-    
-  });
+const ChatList = ({ chats, nav}) => {
+  
 
   const renderItem = ({ item }) => (
     <ListItem
       name={item.user.name}
       messages={item.messages}
       nav={nav}
-      
-      
+      topic={item.topic}
+      userId={item.user.userId}
     />
   );
 
@@ -153,10 +151,22 @@ const ChatList = ({ chats, nav, t}) => {
   );
 };
 
-function ChatTab({ navigation }) {
-  const [chats, setChats] = useState();
-  const [count, setCount] = useState(1);
-  useEffect(() => {_storeData()})
+function ChatTab({ navigation, friends, user, chats }) {
+ 
+  useEffect(() => {
+    //console.log(chats)
+  })
+
+  function decrementCount() {
+    let { count, actions } = props;
+    count--;
+    actions.changeCount(count);
+  }
+  function incrementCount() {
+    let { count, actions } = props;
+    count++;
+    actions.changeCount(count);
+  }
 
   
   
@@ -164,7 +174,7 @@ function ChatTab({ navigation }) {
     try {
       const str = await AsyncStorage.getItem('@Chats');
       const json = await JSON.parse(str);
-      setChats(json);
+      
     } catch (error) {
       console.error(error);
     }
@@ -190,4 +200,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatTab;
+const mapStateToProps = (state) => {
+  const { friends, user, chats } = state
+  return { friends, user, chats }
+};
+
+export default connect(mapStateToProps)(ChatTab);
+

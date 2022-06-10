@@ -1,49 +1,21 @@
 import * as React from 'react';
 import { Text, View, FlatList, StyleSheet, TextInput, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useEffect } from 'react';
-import {KeyboardAvoidingView, Button} from 'react-native'
+import { Icon } from 'react-native-elements'
+import { bindActionCreators } from 'redux';
+import { addMessageToChat } from '../../actions/chats';
+import { connect } from 'react-redux';
 
-export default function UserChat({route, navigation}) {
-  const { messages, name} = route.params;
+function UserChat({route, navigation, addMessageToChat}) {
+  const {messages, name, topic, userId } = route.params;
 
   useEffect(() => {
-    console.log('from UserChat:  ')
-    
-    
     navigation.setOptions({
       title: name
     })
   },[])
 
-  return (
-    
-   
-     
-      <MessageList messages={messages} />
-    
-  
-    
-  );
-  
-}
 
-function Message({text, fromSelf}) {
- 
-  const alignSelf = fromSelf ? 'flex-end' : 'flex-start';
-  const marginLeft = fromSelf ? 0 : 9;
-  const marginRight = fromSelf ? 9 : 0;
-  const backgroundColor = fromSelf ? '#34a4eb' : 'lightgrey';
-  const textColor = fromSelf ? 'white' : 'black';
-
-  return (
-    <View style={[{ marginTop: 5, borderRadius: 10, maxWidth : '60%', padding: 8}, {alignSelf: alignSelf, marginLeft: marginLeft, marginRight: marginRight, backgroundColor:backgroundColor}]}>
-         <Text style={{color: textColor, fontSize: 17 }}>{text}</Text>
-    </View>
-  )
-}
-
-function MessageList({messages, route}) {
-  
   useEffect(()=> {
     
   }, [])
@@ -55,45 +27,97 @@ function MessageList({messages, route}) {
     );
   };
 
-  function test() {
-    console.log('testing...')
-    
-  }
-
   return (
-    
-   
-      <View style={{ height: '100%'}}>
-         <FlatList
-        style={{backgroundColor: 'cyan'}}
+    <View style={{ height: '100%'}}>
+        <FlatList
+        style={{backgroundColor: 'white'}}
         data={messages}
         renderItem={renderItem}
-        keyExtractor={(item) => item.text}
-      />
+        keyExtractor={(item, index) => 'key'+index}
+        ListHeaderComponent={<FlatList_Header topic={topic} name={name}/>}
+        />
+
+        <View style={{flexDirection: 'row'}}>
+          <View  style={[styles.input, {flex: 1,  borderRadius: 40}]}>
+            <TextInput style={{flex: 1}}></TextInput>
+          </View>
+          <Icon name='send' type={'feather'} style={{marginTop: 10, marginRight: 10}} onPress={() => addMessageToChat({userId, message: { time: new Date(), text: 'Hello world!', fromSelf: true }})}/>
+        </View>
+    </View>
+  );
+  
+}
+
+function Message({text, fromSelf}) {
+ 
+  const alignSelf = fromSelf ? 'flex-end' : 'flex-start';
+  const marginLeft = fromSelf ? 0 : 9;
+  const marginRight = fromSelf ? 9 : 0;
+  const backgroundColor = fromSelf ? '#34a4eb' : '#d3d3d3';
+  const textColor = fromSelf ? 'white' : 'black';
+
+  return (
+    <View style={[{ marginTop: 5, borderRadius: 10, maxWidth : '60%', padding: 8}, {alignSelf: alignSelf, marginLeft: marginLeft, marginRight: marginRight, backgroundColor:backgroundColor}]}>
+         <Text style={{color: textColor, fontSize: 17 }}>{text}</Text>
+    </View>
+  )
+}
 
 
+
+
+
+const FlatList_Header = ({topic, name}) => {
+  return (
+    <View style={{
       
-      <View  style={styles.input}>
-        <TextInput style={{flex: 1}}></TextInput>
-        <Button title="V" style={{}} onPress={test}></Button>
-      </View>
-
-
-      </View>
-   
+      width: "100%",
       
-     
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
+
+      <Text style={{ fontSize: 15, color: 'black', textAlign: 'center', paddingRight: 40, paddingLeft: 40, marginTop: 5 }}>Je bent gematcht met {name} gebaseerd op de stelling: "{topic}"</Text>
+
+    </View>
   );
 }
 
+
+
+
+
 const styles = StyleSheet.create({
   input: {
-    height: 40,
+    height: 35,
     borderWidth: 1,
+    borderColor: '#d3d3d3',
     padding: 10,
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
     flexDirection: 'row',
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 6,
+    marginBottom: 6
   }
 });
+
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    addMessageToChat,
+  }, dispatch)
+);
+
+
+const mapStateToProps = (state) => {
+  const { chats } = state
+  return { chats }
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserChat);
+
 
 

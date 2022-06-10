@@ -1,30 +1,60 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, TextInput, View, Button } from "react-native";
+import { StyleSheet, TextInput, View, Button } from "react-native";
 
-const UselessTextInput = () => {
-  const [text, onChangeText] = React.useState("");
-  const [number, onChangeNumber] = React.useState("");
+
+const LogInScreen = ({route, navigation}) => {
+  
+
+  const [email, onChangeEmail] = React.useState("");
+  const [password, onChangePassword] = React.useState("");
+
+  const url = 'https://dialoog-backend.herokuapp.com/login';
+
+  async function logIn() {
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          password: password,
+          email: email
+        })
+      });
+
+      const data = (await response.json())[0];
+      if (data.authToken !== null) {
+        navigation.navigate('Home');
+      }
+
+    } catch (err) {
+      console.error(err)
+    }
+
+  }
 
   return (
       <View style={{marginTop: 40}}>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeText}
+          onChangeText={onChangeEmail}
           keyboardType="email-address"
-          value={text}
+          value={email}
           placeholder='E-mail'
           placeholderTextColor={'grey'}
         />
         <TextInput
           style={styles.input}
-          onChangeText={onChangeNumber}
-          value={number}
+          onChangeText={onChangePassword}
+          value={password}
           placeholder="Wachtwoord"
           placeholderTextColor={'grey'}
           secureTextEntry={true}
         />
 
-        <Button title="Verstuur"></Button>
+        <Button title="Verstuur" onPress={logIn}></Button>
       </View>
     
   );
@@ -39,4 +69,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UselessTextInput;
+export default LogInScreen;
