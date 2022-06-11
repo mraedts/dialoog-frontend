@@ -9,14 +9,21 @@ import {useEffect} from 'react'
 function Item({ answer, statementText, statementId, user, opinions, modifyOpinion}) {
     
     async function myChangeOpinion(n) {
+        const currentAnswer = answer;
       
       console.log(opinions)
   
       console.log('statementid: ' + statementId)
 
-      modifyOpinion({answer: n, statement: statementText, statementid: statementId})
+      modifyOpinion({answer: n+1, statement: statementText, statementid: statementId})
 
-      //const data = await changeOpinion(user.id, user.authToken, statementId, n+1);
+      const data = await changeOpinion(user.id, user.authToken, statementId, n+1);
+
+      if (data.message !== "OK") {
+        // Don't go through with state change if request wasn't processed
+        modifyOpinion({answer: oldAnswer+1, statement: statementText, statementid: statementId})
+
+      }
 
       
       
