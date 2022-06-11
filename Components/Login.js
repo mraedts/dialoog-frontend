@@ -4,14 +4,12 @@ import { StyleSheet, TextInput, View, Button } from "react-native";
 
 const LogInScreen = ({route, navigation}) => {
   
-
   const [email, onChangeEmail] = React.useState("");
   const [password, onChangePassword] = React.useState("");
 
   const url = 'https://dialoog-backend.herokuapp.com/login';
 
   async function logIn() {
-
     try {
       const response = await fetch(url, {
         method: 'POST',

@@ -30,11 +30,20 @@ const chatReducer = (state = INITIAL_STATE, action) => {
             return {...state, newChat};
       
           case 'ADD_MESSAGE_TO_CHAT':
+            const {message, userId} = action.payload.message;
             
             const newState = [...state];
-            newState[0].messages.push(action.payload.message.message);
+            console.log(action.payload)
+            let chatIndex;
 
-            console.log(newState);
+            for (let i = 0; i < state.length; i++) {
+                if (state[i].user.userId === userId) {
+                    chatIndex = i;
+                } 
+            }
+
+            newState[chatIndex].messages.push(message);
+
             return newState;
 
           default:

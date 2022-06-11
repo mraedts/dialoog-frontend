@@ -1,36 +1,25 @@
 import React from "react";
 import { StyleSheet, TextInput, View, Button } from "react-native";
+import {connect} from 'react-redux'
+import { bindActionCreators } from 'redux';
+import { setAuthToken, setUser } from "../actions/user";
+import {registerAndLogin } from "../api";
 
-const UselessTextInput = () => {
+const Register = ({user, setUser}) => {
   const [name, changeName] = React.useState("");
   const [email, changeEmail] = React.useState("");
   const [password, changePassword] = React.useState("");
   const [vPassword, changeVPassword] = React.useState("");
 
-  async function registerUser() {
-    console.log('trying to register user...')
-    console.log('password: ' + password)
-    const url = 'https://dialoog-backend.herokuapp.com/users';
-    
+  async function register() {
+    const userInfo = await registerAndLogin(name, email, password)
+    console.log('from register(): ')
+    console.log(userInfo)
 
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: name,
-          password: password,
-          email: email
-        })
-      });
-      
-      console.log(await response.json());
-
-    } catch (err) {
-      console.error(err)
-    }
+    setUser({
+      name: userInfo.name,
+      authToken: userInfo.authtoken
+    })
   }
 
   return (
@@ -67,9 +56,8 @@ const UselessTextInput = () => {
           secureTextEntry={true}
         />
 
-        <Button title="Verstuur" onPress={registerUser}></Button>
+        <Button title="Verstuur" onPress={register}></Button>
       </View>
-    
   );
 };
 
@@ -82,4 +70,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UselessTextInput;
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    setAuthToken, setUser
+  }, dispatch)
+);
+
+const mapStateToProps = (state) => {
+  const { user } = state
+  return { user }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
+
+

@@ -1,6 +1,5 @@
 const INITIAL_STATE = {
-    authToken: '2136dghjfj8123723Fe',
-    name: 'Jolanda'
+    
   };
   
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -21,7 +20,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
           case 'SET_AUTHTOKEN':
             const {name} = state;
 
+            console.log(state);
             return {name, authToken: action.payload};
+            
+          case 'SET_USER':
+            return action.payload;
 
           default:
             return state;
