@@ -5,6 +5,10 @@ import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 function Welcome({navigation, user, setAuthToken}) {
+  useEffect(() => {
+    console.log('from welcome: ')
+    console.log(user);
+  },[])
     
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

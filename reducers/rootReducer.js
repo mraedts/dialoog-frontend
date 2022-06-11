@@ -1,12 +1,21 @@
 import userReducer from './userReducer';
-import friendsReducer from './friendsReducer';
 import chatReducer from './chatReducer';
+import opinionReducer from './opinionReducer';
 import { combineReducers } from 'redux';
 
-
-export default combineReducers({
-    friends: friendsReducer,
+const appReducer = combineReducers({
     user: userReducer,
-    chats: chatReducer
-  });
+    chats: chatReducer,
+    opinions: opinionReducer
+});
+
+export default rootReducer = (state, action) => {
+  if (action.type === 'USER_LOGOUT') {
+    return appReducer(undefined, action)
+  }
+  return appReducer(state, action)
+}
+
+
+
 

@@ -5,10 +5,16 @@ export const createNewChat = (chatData) => (
     }
 );
 
-
 export const addMessageToChat = (message, toUserId) => (
     {
       type: 'ADD_MESSAGE_TO_CHAT',
       payload: {message, toUserId},
     }
+);
+
+export const removeAllChats = arg => (
+  {
+    type: 'REMOVE_ALL_CHATS',
+    payload: arg,
+  }
 );

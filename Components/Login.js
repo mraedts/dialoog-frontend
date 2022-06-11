@@ -1,36 +1,31 @@
 import React from "react";
 import { StyleSheet, TextInput, View, Button } from "react-native";
+import { setUser, setAuthToken } from "../actions/user";
+import {setOpinions} from '../actions/opinions'
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { logIn } from "../api";
 
 
-const LogInScreen = ({route, navigation}) => {
-  
+const LogInScreen = ({route, navigation, setUser, setOpinions, opinions}) => {
   const [email, onChangeEmail] = React.useState("");
   const [password, onChangePassword] = React.useState("");
 
   const url = 'https://dialoog-backend.herokuapp.com/login';
 
-  async function logIn() {
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          password: password,
-          email: email
-        })
-      });
+  async function getLogin() {
+    const userInfo = await logIn(email, password);
+    console.log('userInfo:')
+    console.log(userInfo);
+    
+    setUser({
+      name: userInfo.name,
+      authToken: userInfo.authtoken,
+      id: userInfo.userid
+    })
 
-      const data = (await response.json())[0];
-      if (data.authToken !== null) {
-        navigation.navigate('Home');
-      }
-
-    } catch (err) {
-      console.error(err)
-    }
-
+    setOpinions(userInfo.answers)
+    console.log(setOpinions)
   }
 
   return (
@@ -52,9 +47,8 @@ const LogInScreen = ({route, navigation}) => {
           secureTextEntry={true}
         />
 
-        <Button title="Verstuur" onPress={logIn}></Button>
+        <Button title="Verstuur" onPress={getLogin}></Button>
       </View>
-    
   );
 };
 
@@ -67,4 +61,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LogInScreen;
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    setAuthToken, setUser, setOpinions
+  }, dispatch)
+);
+
+const mapStateToProps = (state) => {
+  const { user } = state
+  return { user }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogInScreen);

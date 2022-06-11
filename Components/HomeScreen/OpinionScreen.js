@@ -1,11 +1,15 @@
 import { Text, View, StyleSheet, StatusBar,  FlatList, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { getOpinions } from '../../api';
+import Item from '../OpinionListItem'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {setOpinions} from '../../actions/opinions'
+import {useEffect} from 'react'
 
 //@TODO:
 // - fetch opinions at component render
 // - make api call to change opinion
-
-
 
 
 const DATA = [
@@ -24,48 +28,23 @@ const DATA = [
   
 ];
 
-function Item({ id, title}) {
-  const [pressed, setPressed] = useState(-1);
-  
-  
-  async function changeOpinion(pressed) {
-    // call api
-    console.log(pressed);
 
-    setPressed(pressed)
-    console.log(pressed)
-  }
+const OpinionScreen = ({user, opinions}) => {
 
-  
-  const getButColor = butIndex => pressed === butIndex ? 'black' : 'white';
-
-  
-
-  return (
-      <View style={{flex: 0.75,borderBottomColor: 'grey', borderBottomWidth: 1, alignItems: 'center',marginLeft: 15, marginRight: 15}}>
-        <Text style={{padding: 20, textAlign: 'center', fontSize: 15, fontWeight: 'bold'}}>{title} </Text>
-        <View style={{flex: 1, flexDirection: 'row', marginBottom: 10}}>
-          <TouchableOpacity onPress={() => {changeOpinion(0)}} style={[styles.roundButton1, {backgroundColor: getButColor(0)}]} activeOpacity={1} />
-          <TouchableOpacity onPress={() => {changeOpinion(1)}} style={[styles.roundButton1, {backgroundColor: getButColor(1)}]} activeOpacity={1}/>
-          <TouchableOpacity onPress={() => {changeOpinion(2)}} style={[styles.roundButton1, {backgroundColor: getButColor(2)}]} activeOpacity={1}/>
-          <TouchableOpacity onPress={() => {changeOpinion(3)}} style={[styles.roundButton1, {backgroundColor: getButColor(3)}]} activeOpacity={1}/>
-          <TouchableOpacity onPress={() => {changeOpinion(4)}} style={[styles.roundButton1, {backgroundColor: getButColor(4)}]} activeOpacity={1}/>
-        </View>
-      </View>
-      );
-}
-
-const OpinionScreen = () => {
+  useEffect(()=> {
+    console.log('from opinionScreen: ')
+    console.log(opinions)
+  })
   const renderItem = ({ item }) => (
-    <Item title={item.title} />
+    <Item title={item.title} statementText={item.statement} answer={item.answer} statementId={item.statementid}  />
   );
 
   return (
-    
       <FlatList
-        data={DATA}
+        data={opinions}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => undefined}
+        
       />
     
   );
@@ -99,4 +78,20 @@ const styles = StyleSheet.create({
   }
 });
 
-export default OpinionScreen;
+
+const mapStateToProps = (state) => {
+  const { user, chats, opinions } = state
+  return { user, chats, opinions }
+};
+
+
+
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+      setOpinions
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(OpinionScreen);
+

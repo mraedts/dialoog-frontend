@@ -12,17 +12,16 @@ import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import {setAuthToken} from '../actions/user';
 import { bindActionCreators } from 'redux';
-import { Button } from 'react-native';
 import { Icon } from 'react-native-elements'
 import { requestMatch } from '../api';
-
+import { View } from 'react-native';
+import { Button } from 'react-native-elements';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 
 function HomeScreen({chats}) {
-
     function getMatch() {
       // request match from api and store in state
     }
@@ -30,20 +29,19 @@ function HomeScreen({chats}) {
     return (
         <Tab.Navigator>
           <Tab.Screen name="Gesprekken" component={ChatTab} chats={chats} options={{headerRight: () => (
-            <Icon style={{marginRight: 10, marginTop: 2}}
-            name='add'
-            type='material'
-            color='black'
-            onPress={requestMatch}
-          />
+            <View style={{marginRight:10 , marginTop: 0}}>
+                <Button
+                title="Nieuw Gesprek"
+                type="clear"
+                />
+            </View>
           )}} />
           <Tab.Screen name="Meningen" component={OpinionScreen} />
           <Tab.Screen name="Instellingen" component={SettingsScreen} />
         </Tab.Navigator>
     );
   }
-
-
+  
 
 
 function Main({user}) {
