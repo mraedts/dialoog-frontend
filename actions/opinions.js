@@ -18,3 +18,10 @@ export const setOpinions = (opinions) => (
         payload: opinions
     }
 )
+
+export const deleteOpinions = arg => (
+    {
+        type: 'DELETE_OPINIONS',
+        payload: arg
+    }
+)

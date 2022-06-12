@@ -4,20 +4,43 @@ import {
   View,
   FlatList,
   StyleSheet,
-  TextInput,
-  SafeAreaView,
-  TouchableWithoutFeedback,
-  Keyboard,
+  TextInput
 } from "react-native";
-import { useEffect } from "react";
+import { useEffect, useState} from "react";
 import { Icon } from "react-native-elements";
 import { bindActionCreators } from "redux";
 import { addMessageToChat } from "../../actions/chats";
 import { connect } from "react-redux";
+import * as api from '../../api'
 
-function UserChat({ route, navigation, addMessageToChat }) {
+function UserChat({ route, navigation, addMessageToChat, user}) {
   const { messages, name, topic, userId } = route.params;
+  
 
+  const [text, setText] = useState('')
+
+  async function handleSendPress() {
+    if (text.length < 1) {
+      return;
+    }
+    console.log('USER ID: ' + user.id)
+    console.log('RECEIVER ID: ' + userId)
+
+    console.log('user from handlesendpress');
+    console.log(user)
+    addMessageToChat({
+      userId,
+      message: {
+        time: new Date(),
+        text: text,
+        fromSelf: true,
+      },
+    });
+
+    const data = await api.sendMessage(userId, user.id, text, user.authToken);
+    setText('');
+  }
+  
   useEffect(() => {
     navigation.setOptions({
       title: name,
@@ -42,21 +65,17 @@ function UserChat({ route, navigation, addMessageToChat }) {
 
       <View style={{ flexDirection: "row" }}>
         <View style={[styles.input, { flex: 1, borderRadius: 40 }]}>
-          <TextInput style={{ flex: 1 }}></TextInput>
+          <TextInput style={{ flex: 1 }} onChangeText={setText}
+          value={text}></TextInput>
         </View>
         <Icon
           name="send"
           type={"feather"}
-          style={{ marginTop: 10, marginRight: 10 }}
+          style={{ marginTop: 10, marginRight: 10}}
+          
           onPress={() =>
-            addMessageToChat({
-              userId,
-              message: {
-                time: new Date(),
-                text: "Hello world!",
-                fromSelf: true,
-              },
-            })
+
+            handleSendPress()
           }
         />
       </View>
@@ -138,8 +157,8 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 const mapStateToProps = (state) => {
-  const { chats } = state;
-  return { chats };
+  const { chats , user} = state;
+  return { chats, user };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserChat);

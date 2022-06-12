@@ -1,5 +1,17 @@
 {
   "expo": {
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/person1.png",
+          "color": "#ffffff",
+          "sounds": [
+          
+          ]
+        }
+      ]
+    ],
     "name": "dialoog",
     "slug": "dialoog",
     "version": "1.0.0",

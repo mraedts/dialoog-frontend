@@ -28,10 +28,15 @@ const opinionReducer = (state = INITIAL_STATE, action) => {
 
         case 'SET_OPINIONS':
           return action.payload;
+
+        case 'DELETE_OPINIONS':
+          return [];
           
         default:
           return state;
         }
+
+        
 };
 
 export default opinionReducer;

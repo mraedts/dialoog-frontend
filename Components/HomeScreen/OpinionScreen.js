@@ -7,26 +7,7 @@ import {bindActionCreators} from 'redux'
 import {setOpinions} from '../../actions/opinions'
 import {useEffect} from 'react'
 
-//@TODO:
-// - fetch opinions at component render
-// - make api call to change opinion
 
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Nederland moet meer investeren in defensie.',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'De basisbeurs moet worden verhoogd naar 500 euro per maand.',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'myaes',
-  },
-  
-];
 
 
 const OpinionScreen = ({user, opinions}) => {
@@ -44,7 +25,6 @@ const OpinionScreen = ({user, opinions}) => {
         data={opinions}
         renderItem={renderItem}
         keyExtractor={item => undefined}
-        
       />
   );
 }
@@ -82,8 +62,6 @@ const mapStateToProps = (state) => {
   const { user, chats, opinions } = state
   return { user, chats, opinions }
 };
-
-
 
 
 const mapDispatchToProps = dispatch => (

@@ -12,9 +12,10 @@ export const addMessageToChat = (message, toUserId) => (
     }
 );
 
-export const removeAllChats = arg => (
+export const deleteChats = arg => (
   {
-    type: 'REMOVE_ALL_CHATS',
+    type: 'DELETE_CHATS',
     payload: arg,
   }
 );
+

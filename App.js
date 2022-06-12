@@ -6,9 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 import rootReducer from './reducers/rootReducer';
-
 import { PersistGate } from './node_modules/redux-persist/lib/integration/react';
-
 
 const persistConfig = {
   key: 'root',
@@ -16,14 +14,11 @@ const persistConfig = {
   stateReconciler: autoMergeLevel2
 };
 
-
 // wrap persist API around root reducer and store
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = createStore(persistedReducer);
 const persistor = persistStore(store);
-
-
 
 
 export default function App() {

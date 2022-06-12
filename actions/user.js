@@ -25,3 +25,14 @@ export const logOut = payload => (
     payload: payload
   }
 )
+
+export const setAcceptingMatches = payload => (
+  {
+    type: "SET_ACCEPTING_MATCHES",
+    payload: payload
+  }
+)
+
+
+
+

@@ -27,7 +27,7 @@ const chatReducer = (state = INITIAL_STATE, action) => {
             // update the redux state
             
         
-            return {...state, newChat};
+            return [...state, newChat];
       
           case 'ADD_MESSAGE_TO_CHAT':
             const {message, userId} = action.payload.message;
@@ -45,6 +45,9 @@ const chatReducer = (state = INITIAL_STATE, action) => {
             newState[chatIndex].messages.push(message);
 
             return newState;
+
+        case 'DELETE_CHATS':
+            return [];
 
           default:
             return state;

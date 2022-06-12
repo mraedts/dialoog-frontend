@@ -15,39 +15,9 @@ function User(img, name, userId) {
 }
 
 
-
-
-
-
-const Chats = [
-
-  {
-    user: User('../../../../assets/person1.jpg', 'Jolanda', 1),
-    messages: [
-      Message(new Date(), "Lorem ipsum", false),
-      Message(new Date(), "IUHSIUDHDSKJHDKJHSJKDHKJH", false),
-      Message(new Date(), "Ok Jolanda", true),
-    ],
-    topic: "Genocide"
-  },
-
-  {
-    user: User('../assets/person1.jpg', 'Hennie', 2),
-    messages: [
-      Message(new Date(), "JKBSDJKHDJKSHD", false),
-      Message(new Date(), "Lorem ipsum", false),
-      Message(new Date(), "Ok Hennie", true),
-    ],
-    topic: "Rutte"
-  },
-  
-]
-
-
-
 function ListItem({ name, messages, nav, topic, userId}) {
   useEffect(() => {
-  
+    //console.log('from ChatTablistitem: ' );
   });
 
   return (
@@ -105,7 +75,7 @@ function ListItem({ name, messages, nav, topic, userId}) {
           style={{ paddingLeft: 5, fontSize: 14, paddingRight: 40 }}
           numberOfLines={2}
         >
-          {messages[messages.length-1].text}
+          {messages.length === 0 ? '':messages[messages.length-1].text}
         </Text>
       </View>
     </View>
@@ -139,7 +109,7 @@ const ChatList = ({ chats, nav}) => {
 function ChatTab({ navigation, friends, user, chats }) {
  
   useEffect(() => {
-    //console.log(chats)
+    console.log(chats)
   })
 
   function decrementCount() {
