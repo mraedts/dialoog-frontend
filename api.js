@@ -134,3 +134,30 @@ export async function changeOpinion(userId, authToken, statementId, selectedStat
     }
 }
 
+
+async function getMatch(userId, authToken) {
+  const url = 'https://dialoog-backend.herokuapp.com/match/' + userId;
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          authtoken: authToken,
+        })
+      });
+
+      const data = await response.json();
+      console.log('getMatch response: ');
+      console.log(data);
+
+      return data;
+
+    } catch (err) {
+      console.log('Something went wrong while trying to get a match:')
+      console.error(err)
+    }
+}
+

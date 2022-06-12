@@ -46,7 +46,6 @@ const OpinionScreen = ({user, opinions}) => {
         keyExtractor={item => undefined}
         
       />
-    
   );
 }
 

@@ -6,7 +6,7 @@ import {setUser, logOut} from '../../actions/user'
 import { Icon } from 'react-native-elements'
 
 
-function SettingsScreen({setUser, user, logOut}) {
+function SettingsScreen({setUser, user, logOut, navigation}) {
 
     const createTwoButtonAlert = () => {
         console.log('ran twobuttonalert')
@@ -23,11 +23,11 @@ function SettingsScreen({setUser, user, logOut}) {
         ]
         
         )
-};
+    };
 
     return (
         <View style={{ flex: 1, paddingTop: 50 }}>
-            <TouchableOpacity style={styles.groupContainer}>
+            <TouchableOpacity style={styles.groupContainer} onPress={() => navigation.navigate('Profiel Aanpassen')}>
                 <Image source={require('../../assets/person1.jpg')} style={{width: 50, height: 50,  
             
             aspectRatio: 1,
@@ -68,7 +68,7 @@ function SettingsScreen({setUser, user, logOut}) {
                 <View style={{borderBottomColor: 'grey', borderBottomWidth: 1, marginTop: 10}}></View>
                 <View >
                     <TouchableOpacity style={{flexDirection: 'row',  marginTop: 10}} onPress={createTwoButtonAlert}>
-                        <Icon name= 'delete' color={'red'} style={{ width: 22, height: 22,  aspectRatio: 1, borderRadius: 40,marginRight: 10}}></Icon>
+                        <Icon name= 'delete' color={'red'} style={{ width: 22, height: 22,  aspectRatio: 1, borderRadius: 40,marginRight: 10, marginTop: -2}}></Icon>
                         <Text style={{color: 'red'}}>Verwijder account</Text>
                     </TouchableOpacity>
                 </View>

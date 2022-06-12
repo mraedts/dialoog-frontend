@@ -14,17 +14,22 @@ import {setAuthToken} from '../actions/user';
 import { bindActionCreators } from 'redux';
 import { Icon } from 'react-native-elements'
 import { requestMatch } from '../api';
-import { View } from 'react-native';
+import { View, ToastAndroid } from 'react-native';
 import { Button } from 'react-native-elements';
+import * as Notifications from 'expo-notifications';
+import ProfileSettingsScreen from './ProfileSettingsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
 
 function HomeScreen({chats}) {
     function getMatch() {
       // request match from api and store in state
     }
+
+    const showToast = () => {
+      ToastAndroid.show("Iedereen is het met je eens! We kunnen niemand met je matchen.", ToastAndroid.LONG)
+    };
 
     return (
         <Tab.Navigator>
@@ -33,6 +38,7 @@ function HomeScreen({chats}) {
                 <Button
                 title="Nieuw Gesprek"
                 type="clear"
+                onPress={showToast}
                 />
             </View>
           )}} />
@@ -42,8 +48,6 @@ function HomeScreen({chats}) {
     );
   }
   
-
-
 function Main({user}) {
     useEffect(() => {
         console.log(user)
@@ -59,6 +63,7 @@ function Main({user}) {
             <Stack.Screen name="Registreren" component={Register}  />
             </>}
             <Stack.Screen name="UserChat" component={UserChat} />
+            <Stack.Screen name="Profiel Aanpassen" component={ProfileSettingsScreen} />
            
             </Stack.Navigator>
             

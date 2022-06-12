@@ -1,4 +1,4 @@
-import { Text, View, FlatList, StyleSheet, Image } from 'react-native';
+import { Text, View, FlatList, StyleSheet, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -43,22 +43,7 @@ const Chats = [
   
 ]
 
-const _storeData = async () => {
-  try {
-    await AsyncStorage.setItem('@Chats', JSON.stringify(Chats));
-    console.log('Saved data...');
-  } catch (error) {
-    console.log(error);
-  }
-};
 
-const _readData = async () => {
-  try {
-    const data = await AsyncStorage.getItem('@Chats');
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 function ListItem({ name, messages, nav, topic, userId}) {
   useEffect(() => {
@@ -116,7 +101,7 @@ function ListItem({ name, messages, nav, topic, userId}) {
           {name}
         </Text>
         <Text
-          onPress={_readData}
+          
           style={{ paddingLeft: 5, fontSize: 14, paddingRight: 40 }}
           numberOfLines={2}
         >

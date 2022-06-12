@@ -9,7 +9,7 @@ import {useEffect} from 'react'
 function Item({ answer, statementText, statementId, user, opinions, modifyOpinion}) {
     
     async function myChangeOpinion(n) {
-        const currentAnswer = answer;
+        const oldAnswer = answer;
       
       console.log(opinions)
   
@@ -21,12 +21,9 @@ function Item({ answer, statementText, statementId, user, opinions, modifyOpinio
 
       if (data.message !== "OK") {
         // Don't go through with state change if request wasn't processed
-        modifyOpinion({answer: oldAnswer+1, statement: statementText, statementid: statementId})
-
+        modifyOpinion({answer: oldAnswer+1, statement: statementText, statementid: statementId});
       }
 
-      
-      
     }
   
 
