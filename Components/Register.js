@@ -9,7 +9,7 @@ import { setOpinions } from "../actions/opinions";
 import * as api from '../api'
 import * as Notifications from 'expo-notifications'
 
-const Register = ({user, setUser, setOpinions}) => {
+const Register = ({user, setUser, setOpinions, opinions}) => {
   const [name, changeName] = React.useState("");
   const [email, changeEmail] = React.useState("");
   const [password, changePassword] = React.useState("");
@@ -134,8 +134,8 @@ const mapDispatchToProps = dispatch => (
 );
 
 const mapStateToProps = (state) => {
-  const { user } = state
-  return { user }
+  const { user, opinions } = state
+  return { user, opinions }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

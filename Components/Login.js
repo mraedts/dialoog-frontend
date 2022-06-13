@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as api from "../api";
 import * as Notifications from 'expo-notifications'
-import {addMessageToChat} from '../actions/chats'
+import {addMessageToChat, createNewChat} from '../actions/chats'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -17,7 +17,7 @@ Notifications.setNotificationHandler({
 });
 
 
-const LogInScreen = ({route, navigation, setUser, setOpinions, opinions, addMessageToChat}) => {
+const LogInScreen = ({route, navigation, setUser, setOpinions, opinions, addMessageToChat, createNewChat}) => {
   const [email, onChangeEmail] = React.useState("");
   const [password, onChangePassword] = React.useState("");
 
@@ -29,12 +29,13 @@ const LogInScreen = ({route, navigation, setUser, setOpinions, opinions, addMess
     console.log(not.request.content.data)
     if (not.request.content.data.type === 'message') {
       addMessageToChat(not.request.content.data.message, not.request.content.data.senderId)
-    } else if (not.request.content.data,type === 'match') {
+    } else if (not.request.content.data.type === 'match') {
         const matchedWith = not.request.content.data.senderId;
         const userInfo = await api.getUserInfo(matchedWith);
-
-
         let topic;
+
+        console.log('OPINIONS FROM HANDLENOTIFICATION');
+        console.log(opinions)
 
       opinions.forEach(op => {
         if (op.statementid === not.request.content.data.statementid) topic = op.statement;
@@ -112,13 +113,13 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    setAuthToken, setUser, setOpinions, addMessageToChat
+    setAuthToken, setUser, setOpinions, addMessageToChat, createNewChat
   }, dispatch)
 );
 
 const mapStateToProps = (state) => {
-  const { user } = state
-  return { user }
+  const { user , opinions} = state
+  return { user, opinions }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogInScreen);
