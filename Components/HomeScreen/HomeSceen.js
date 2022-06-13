@@ -12,7 +12,8 @@ import { Icon } from 'react-native-elements'
 
 const Tab = createBottomTabNavigator();
 
-function HomeScreen({chats, user, createNewChat, opinions }) {
+
+function HomeScreen({chats, user, createNewChat, opinions,  }) {
     async function getMatch() {
      
       const data = await api.getMatch(user.id, user.authToken);
@@ -29,9 +30,19 @@ function HomeScreen({chats, user, createNewChat, opinions }) {
       opinions.forEach(op => {
         if (op.statementid === data[0].statementid) topic = op.statement;
       })
+
       console.log({topic})
-      createNewChat({img: '../assets/person1.jpg', topic, name: userResponse.name, userId: userResponse.userid })
-      //console.log(chats)
+      
+      createNewChat({img: '../assets/person1.jpg', topic, name: userResponse.name, userId: data[0].userid2 })
+      
+      console.log('chats from NIEUW GESPREK')
+      console.log(chats)
+      console.log('data:')
+      console.log(data[0])
+      
+
+
+
     }
 
     
@@ -73,6 +84,7 @@ function HomeScreen({chats, user, createNewChat, opinions }) {
 
   const mapDispatchToProps = dispatch => (
     bindActionCreators({
+      
         createNewChat
     }, dispatch)
   );

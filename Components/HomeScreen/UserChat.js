@@ -13,7 +13,7 @@ import { addMessageToChat } from "../../actions/chats";
 import { connect } from "react-redux";
 import * as api from '../../api'
 
-function UserChat({ route, navigation, addMessageToChat, user}) {
+function UserChat({ route, navigation, addMessageToChat, user, chats}) {
   const { messages, name, topic, userId } = route.params;
   
 
@@ -23,11 +23,7 @@ function UserChat({ route, navigation, addMessageToChat, user}) {
     if (text.length < 1) {
       return;
     }
-    console.log('USER ID: ' + user.id)
-    console.log('RECEIVER ID: ' + userId)
-
-    console.log('user from handlesendpress');
-    console.log(user)
+   
     addMessageToChat({
       userId,
       message: {
@@ -36,7 +32,7 @@ function UserChat({ route, navigation, addMessageToChat, user}) {
         fromSelf: true,
       },
     });
-
+    
     const data = await api.sendMessage(userId, user.id, text, user.authToken);
     setText('');
   }

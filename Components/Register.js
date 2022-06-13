@@ -8,33 +8,47 @@ import { ToastAndroid } from "react-native";
 import { setOpinions } from "../actions/opinions";
 import * as api from '../api'
 import * as Notifications from 'expo-notifications'
+import { createNewChat, addMessageToChat } from "../actions/chats";
+import { setSubscription } from "../actions/subscription";
 
-const Register = ({user, setUser, setOpinions, opinions}) => {
+const Register = ({user, setUser, setOpinions, opinions, createNewChat, route, setSubscription, chats, addMessageToChat}) => {
   const [name, changeName] = React.useState("");
   const [email, changeEmail] = React.useState("");
   const [password, changePassword] = React.useState("");
   const [vPassword, changeVPassword] = React.useState("");
-  
+
   async function handleNotification(not) {
     console.log(not.request.content.data)
     if (not.request.content.data.type === 'message') {
-      addMessageToChat(not.request.content.data.message, not.request.content.data.senderId)
+      console.log('************************MESSAGE DATA FROM RECEIVER********************')
+      
+      console.log(not.request.content.data)
+      console.log({chats})
+
+
+      const senderId = not.request.content.data.senderId;
+      
+      
+
+      console.log('************************MESSAGE DATA FROM RECEIVER********************')
+      addMessageToChat(not.request.content.data.message, senderId)
     } else if (not.request.content.data.type === 'match') {
         const matchedWith = not.request.content.data.senderId;
         const userInfo = await api.getUserInfo(matchedWith);
-
-
         let topic;
 
-      opinions.forEach(op => {
-        if (op.statementid === not.request.content.data.statementid) topic = op.statement;
-      })
+        
         createNewChat({img: '../assets/person1.jpg', topic, name: userInfo.name, userId: userInfo.userid });
+        console.log('chats after creating new chat: ');
+        console.log(chats)
 
     } else {
       console.log('received unrecognized notification!')
     }
   }
+
+ 
+  
 
   const showRegistrationToast = (text) => {
     ToastAndroid.show(text, ToastAndroid.LONG)
@@ -44,8 +58,8 @@ const Register = ({user, setUser, setOpinions, opinions}) => {
 
   async function register() {
     const expoToken = await api.registerForPushNotificationsAsync();
-    console.log({expoToken})
-
+    
+    
     
     if (false) {//!re.test(email)) {
       showRegistrationToast("Dat is geen geldig e-mailadres");
@@ -54,7 +68,7 @@ const Register = ({user, setUser, setOpinions, opinions}) => {
     } else if (password !== vPassword) {
         showRegistrationToast("Wachtwoorden zijn niet gelijk");
     } else {
-      const userInfo = await registerAndLogin(name, email, password, expoToken);
+      const userInfo = await registerAndLogin(name, email.toLowerCase(), password, expoToken);
       if (userInfo.statusCode === 405) {
         showRegistrationToast("Dat e-mailadres is al in gebruik");
       }
@@ -70,12 +84,10 @@ const Register = ({user, setUser, setOpinions, opinions}) => {
         expoToken
       })
 
-      setOpinions(userInfo.answers)
+      setOpinions(userInfo.answers);
 
-      console.log('----------------------------------------------------')
-      console.log('adding Notificationreceivedlistener...')
-      console.log('----------------------------------------------------')
-      Notifications.addNotificationReceivedListener(handleNotification);
+      Notifications.addNotificationReceivedListener(handleNotification)
+
     }
   }
 
@@ -129,7 +141,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    setAuthToken, setUser, setOpinions
+    setAuthToken, setUser, setOpinions, createNewChat, setSubscription, addMessageToChat
   }, dispatch)
 );
 

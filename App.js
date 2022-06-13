@@ -11,7 +11,8 @@ import { PersistGate } from './node_modules/redux-persist/lib/integration/react'
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  stateReconciler: autoMergeLevel2
+  stateReconciler: autoMergeLevel2,
+  blacklist: ['subscription']
 };
 
 // wrap persist API around root reducer and store
@@ -25,9 +26,9 @@ export default function App() {
 
   return (
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+       
         <Main />
-      </PersistGate>
+     
       </Provider>
   )
 }

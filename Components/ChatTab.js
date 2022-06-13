@@ -5,24 +5,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 
-
-function Message(time, text, fromSelf) {
-  return { time: time, text: text, fromSelf: fromSelf };
-}
-
-function User(img, name, userId) {
-  return { img: img, name: name, userId: userId };
-}
-
-
 function ListItem({ name, messages, nav, topic, userId}) {
-  useEffect(() => {
-    //console.log('from ChatTablistitem: ' );
-  });
+
 
   return (
     <View
-    onTouchEnd={() => nav.navigate('UserChat', {messages, name, topic, userId})}
+    onTouchEnd={() => nav.navigate('UserChat', {messages, name,  userId})}
     options={{ title: 'My home' }}
       style={{
         flexDirection: 'row',
@@ -84,6 +72,7 @@ function ListItem({ name, messages, nav, topic, userId}) {
 
 const ChatList = ({ chats, nav}) => {
   
+  
 
   const renderItem = ({ item }) => (
     <ListItem
@@ -109,13 +98,13 @@ const ChatList = ({ chats, nav}) => {
 function ChatTab({ navigation, friends, user, chats }) {
  
   useEffect(() => {
-    console.log(chats)
+    console.log({chats})
   })
 
   function decrementCount() {
     let { count, actions } = props;
     count--;
-    actions.changeCount(count);
+    actions.changeCount(count);r
   }
   function incrementCount() {
     let { count, actions } = props;
@@ -125,20 +114,10 @@ function ChatTab({ navigation, friends, user, chats }) {
 
   
   
-  const readChats = async () => {
-    try {
-      const str = await AsyncStorage.getItem('@Chats');
-      const json = await JSON.parse(str);
-      
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  
 
   // Empty dependency array to prevent from firing infinitely
-  useEffect(async () => {
-    readChats();
-  }, []);
+ 
 
   return <ChatList chats={chats} nav={navigation}  />;
 }

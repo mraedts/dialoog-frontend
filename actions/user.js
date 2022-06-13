@@ -33,6 +33,20 @@ export const setAcceptingMatches = payload => (
   }
 )
 
+export const setJustLoggedOut = payload => (
+  {
+    type: "SET_JUST_LOGGED_OUT",
+    payload: payload
+  }
+)
+
+export const setImg = payload => (
+  {
+    type: "SET_IMAGE",
+    payload: payload
+  }
+)
+
 
 
 

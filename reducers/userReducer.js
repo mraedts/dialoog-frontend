@@ -13,6 +13,9 @@ const userReducer = (state = INITIAL_STATE, action) => {
             const newState = { ...state, name: action.payload };
         
             return newState;
+
+          case 'SET_IMAGE':
+            return {...state, image: action.payload};
       
           case 'SET_AUTHTOKEN':
             
@@ -32,12 +35,12 @@ const userReducer = (state = INITIAL_STATE, action) => {
 
           case 'USER_LOGOUT':
             return {};
+          case 'SET_JUST_LOGGED_OUT':
+            return {...state, justLoggedOut: action.payload}
 
           default:
             return state;
           }
-
-          
 };
 
 export default userReducer;

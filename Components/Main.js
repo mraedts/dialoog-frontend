@@ -24,23 +24,15 @@ import * as Device from 'expo-device';
 
 
 import React, { useState, useEffect, useRef } from 'react';
-
-
-
-
-
-
-
-
+import * as Notifications from 'expo-notifications'
 
 
 const Stack = createNativeStackNavigator();
 
-function Main({user}) {
+function Main({user,}) {
   
-  function handleNotification() {
-    console.log(1)
-  }
+
+
 
     return (
         <NavigationContainer>

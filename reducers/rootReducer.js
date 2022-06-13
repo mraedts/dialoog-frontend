@@ -2,11 +2,13 @@ import userReducer from './userReducer';
 import chatReducer from './chatReducer';
 import opinionReducer from './opinionReducer';
 import { combineReducers } from 'redux';
+import subscriptionReducer from './subscriptionReducer';
 
 const appReducer = combineReducers({
     user: userReducer,
     chats: chatReducer,
-    opinions: opinionReducer
+    opinions: opinionReducer,
+    subscription: subscriptionReducer
 });
 
 export default rootReducer = (state, action) => {
